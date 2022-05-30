@@ -10,12 +10,23 @@ void functionYinYongTest();
 
 using namespace std;
 
+void myswap1(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
 
-void myswap(int &p1, int &p2) {
+void myswap2(int *p1, int *p2) {
+    int temp = *p1;
+    *p1 = *p2;
+    *p2 = temp;
+}
+
+void myswap3(int &p1, int &p2) {
     //传引用和传指针的效果是一样的
     //传引用直接对实参进行操作，没有产生副本
-    int p = p1;//p1=*p1
-    p1 = p2; //*p1=*p2
+    int p = p1;
+    p1 = p2;
     p2 = p;
 }
 
@@ -31,22 +42,35 @@ int main() {
     functionYinYongTest();
     return 0;
 }
-
+/**
+ * 可以实现，但是会产生返回值副本
+ * @param r
+ * @return
+ */
 float fn1(float r) {
     float temp = (float) (r * r * 3.14);
     return temp;
 }
 
+/**
+ * 局部变量会有问题
+ * @param r
+ * @return
+ */
 float &fn2(float r) {
     float temp = (float) (r * r * 3.14);
     float &p = temp;
     return p;
 }
-
+/**
+ * 需要全局变量
+ */
 float temp;
 
 float &fn3(float r) {
     temp = (float) (r * r * 3.14);
+    //相当于 int & b=temp;
+    //      return b;
     return temp;
 }
 
@@ -54,12 +78,15 @@ void functionYinYongTest() {
     float a = fn1(10);
     cout << "a=" << a << endl;
 
+    //报错
     //fn2返回值temp 会在函数结束后进行销毁，所以不能声明一个引用指向函数返回值
-    float &b = fn2(100);
+    float &b = fn2(10);
     cout << "b=" << b << endl;//b=-1.42767e-33
 
     //fn3返回值temp 是全局变量，不会销毁，所以可以声明一个引用指向函数的返回值
-    float &c = fn3(100);
+    float &c = fn3(10);
+    float x=fn3(10);
+    cout << "x=" << x << endl;
     cout << "c=" << c << endl;
 
     //总结：c++ 中的引用可以就理解为c语言中的指针！！！
@@ -102,7 +129,9 @@ void yinyongTest() {
     //引用的好处：1、纯指针，需要不断的取址 2、可以减少内存的分配
     int p11 = 10;
     int p22 = 20;
-    myswap(p11, p22);
+//    myswap1(p11, p22);
+//    myswap2(&p11, &p22);
+    myswap3(p11, p22);
     printf("%d,%d", p11, p22);
 
 }
