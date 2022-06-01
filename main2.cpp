@@ -51,17 +51,20 @@ void test(int a, int b) {
 }
 //------------------------------------------------
 
-void (*myfuncPoint)(int a);
+//定义fun2首先和*结合，是个指针，整体是个函数名，函数名就是地址，指针也是地址，所以指向这个函数地址的指针。
+void (*fun2)(int a);
 
+//给函数重命名，一个int参数的叫做 myFuncTest1
 typedef void myFuncTest1(int a);
-
+//给函数重命名，两个int参数的叫做 myFuncTest2
 typedef void myFuncTest2(int a, int b);
 
-void realTest1(int a) {
+//realTest(int a)和realTest(int a, int b = 10)也是重载，但是不能直接调用。会有二义性，不知道该调用那么
+void realTest(int a) {
     cout << "a=" << a << endl;
 }
 
-void realTest2(int a, int b = 10) {
+void realTest(int a, int b = 10) {
     cout << "a=" << a << ",b=" << b << endl;
 }
 //------------------------------------------------
@@ -100,18 +103,20 @@ int main() {
     int *p = &a;
     test(p);
 //------------------------------------------------
-//为了解决二义性：
-    //func 为函数指针 指向test2
-    //myFuncTest 函数类型
-    myFuncTest1 *func = realTest1;
-    func(3);
+printf("为了解决二义性————》\n");
+    //为了解决二义性：
+    //直接在声明：func1也是myFuncTest1类型（一个参数的函数）的函数指针
+    myFuncTest1 *func1 = realTest;
+    func1(3);
 
-    //myfuncPoint函数指针
-    myfuncPoint = realTest1;
-    myfuncPoint(8);
+    //在外面声明：void (*fun2)(int a);
+    // func2也是myFuncTest1类型的函数指针
+    fun2 = realTest;
+    fun2(8);
 
-    myFuncTest2 *funcTest2=realTest2;
-    funcTest2(4,1);
+    //func3也是myFuncTest2类型（两个参数的函数）的函数指针
+    myFuncTest2 *func3=realTest;
+    func3(4, 1);
 
 //------------------------------------------------
 }
