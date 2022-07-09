@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#include "Car.h"
+
 class Child{
 
 };
@@ -93,21 +95,28 @@ int main() {
 //    test1();
 //    test2();
 //    test3();
-//    test4();
+    test4();
 //    test5();
 
 
 //0 param new person
 //delete person test6的方法结束了
 //delete person main方法结束了
-    Person person=10;
-    test6(person);
-    cout<<"person a ="<<person.a<<endl;
-    return 0;
+//    Person person=10;
+//    test6(person);
+//    cout<<"person a ="<<person.a<<endl;
+//    return 0;
+
+
+Car *car=new Car;
+car->run();
+
+
 }
 
 //传递是地址
-void test6(Person person) {
+void test6( Person person) {
+    cout<<"test6 "<<endl;
 }
 
 void test5() {
@@ -121,6 +130,8 @@ void test4() {
     //explicit 关键字
     //   explicit Person(int a) {} 如果用 explicit 对Person一个参数的构造函数进行修饰，则表示不可以用隐式调用，必须明确的调用
     Person person5 = 10;
+    Person person6=(1,3);
+    cout<<person6.a<<endl;
 }
 
 void test3() {
