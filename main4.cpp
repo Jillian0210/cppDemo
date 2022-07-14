@@ -7,7 +7,7 @@ using namespace std;
 class Person {
 public:
 
-    //常量 const在类型前面或者后面
+    //1、常量 const在类型前面或者后面
     const int a = 10;
     int const a1 = 20;
 
@@ -21,7 +21,7 @@ public:
     int mutable c1 = 200;
 
 
-    //常函数
+    //2、常函数
     void show() const {
         //长函数的目的，不让其它人修改内部的变量
         //修改 a，b都会报错
@@ -40,7 +40,7 @@ void constDemo() {
     person.b = 2;
     person.c = 3;
 
-    //常对象
+    //3、常对象
     Person const person1;
     //既不能修改常量属性，也不能修改普通变量，只能修改mutable修饰的变量。
 //    person1.a=1;
@@ -152,10 +152,56 @@ void sizeDemo() {
 
 /**************************************************************************/
 
-void friendDemo() {
+class Box {
+private:
+    int width;
 
+    void testPrivateMethod() {
+        cout << "testPrivateMethod" << endl;
+    }
+
+public:
+    double length;
+
+    //printWidth 就是友元函数
+    friend void printWidth(Box box);
+
+    friend class Printer;
+
+    void setWidth(int width);
+};
+
+
+class Printer {
+public:
+    void print(int width, Box box) {
+        box.setWidth(width);
+        cout << "Printer excute print Width of box " << box.width << endl;
+        box.testPrivateMethod();
+    }
+};
+
+//成员函数定义
+void Box::setWidth(int d) {
+    this->width = d;
 }
 
+//printWidth 不是任何类的成员函数
+void printWidth(Box box) {
+    //因为printWidth时Box的友元函数，所以可以直接访问该类的任何成员
+    cout << "Width of box " << box.width << endl;
+    box.testPrivateMethod();
+}
+
+
+void friendDemo() {
+    Box box;
+    box.setWidth(10);
+    printWidth(box);
+
+    Printer printer;
+    printer.print(12, box);
+}
 
 /**
  * 知识点如下：
